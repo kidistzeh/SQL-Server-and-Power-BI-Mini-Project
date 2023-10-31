@@ -1,0 +1,242 @@
+   -- TARGETED TECHNOLOGY INSTITUTE 
+    -- SQL AND POWER BI MINI PROJECT 
+     --  Author:   KIDIST ZERIHUN
+	 -- Submited To : DR. FANTAHUN ZIKIE
+
+CREATE DATABASE WFPDB
+GO
+
+USE WFPDB
+GO
+
+SELECT * FROM [dbo].[CO2_Data]
+SELECT * FROM  [dbo].[Maize_Production]
+SELECT * FROM [dbo].[Maize_Yields]
+SELECT * FROM [dbo].[Rice_Production]
+SELECT * FROM [dbo].[Rice_Yields]
+SELECT * FROM [dbo].[Surface_Temperature_Anomaly]
+SELECT * FROM [dbo].[Wheat_Production]
+SELECT * FROM [dbo].[Wheat_Yields]
+
+SELECT DISTINCT country FROM  [dbo].[CO2_Data]
+
+SELECT [country] FROM [dbo].[CO2_Data]
+INTERSECT
+SELECT [Country] FROM [dbo].[Maize_Production]
+INTERSECT 
+SELECT  [Country] FROM [dbo].[Maize_Yields]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Rice_Production]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Rice_Yields]
+INTERSECT
+SELECT [Country]  FROM [dbo].[Surface_Temperature_Anomaly]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Wheat_Production]
+INTERSECT
+SELECT [Country] FROM [dbo].[Wheat_Yields]
+
+CREATE VIEW VW_Countries
+AS 
+SELECT [country] FROM [dbo].[CO2_Data]
+INTERSECT
+SELECT [Country] FROM [dbo].[Maize_Production]
+INTERSECT 
+SELECT  [Country] FROM [dbo].[Maize_Yields]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Rice_Production]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Rice_Yields]
+INTERSECT
+SELECT [Country]  FROM [dbo].[Surface_Temperature_Anomaly]
+INTERSECT 
+SELECT [Country] FROM [dbo].[Wheat_Production]
+INTERSECT
+SELECT [Country] FROM [dbo].[Wheat_Yields]
+
+SELECT * FROM [dbo].[VW_Countries]
+
+DELETE  FROM [dbo].[Wheat_Yields]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Wheat_Production]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Surface_Temperature_Anomaly]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Rice_Yields]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Rice_Production]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Maize_Yields]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[Maize_Production]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+DELETE  FROM [dbo].[CO2_Data]
+WHERE [Country] NOT IN (SELECT * FROM [dbo].[VW_Countries])
+
+SELECT DISTINCT [Country]  FROM [dbo].[CO2_Data]
+SELECT DISTINCT [Country]  FROM  [dbo].[Maize_Production]
+SELECT DISTINCT [Country]  FROM [dbo].[Maize_Yields]
+SELECT DISTINCT [Country]  FROM [dbo].[Rice_Production]
+SELECT DISTINCT [Country]  FROM [dbo].[Rice_Yields]
+SELECT DISTINCT [Country]  FROM [dbo].[Surface_Temperature_Anomaly]
+SELECT DISTINCT [Country]  FROM [dbo].[Wheat_Production]
+SELECT DISTINCT [Country]  FROM [dbo].[Wheat_Yields]
+
+
+SELECT [iso_code], CO2_Data.[country], CO2_Data.[year],[co2],[population], 
+(Maize_Production.[Production_Tones])[Maize_production_in_Tones], (Maize_Yields.[Yield_Hectogram_Per_Hectare])[Maize_Yield_in_HG],   
+(Rice_Production.[Production_Tones])[Rice_Production_in_Tones], (Rice_Yields.[Yield_Hectogram_Per_Hectare])[Rice_Yield_in_HA],
+Surface_Temperature_Anomaly.Surface_Temp_Anomaly, (Wheat_Production.Production_Tones)[Wheat_Production_in_Tones], (Wheat_Yields.Yield_Hectogram_Per_Hectare)[Wheat_Yield_in_HG]  FROM CO2_Data
+ INNER JOIN Maize_Production
+ ON CO2_Data.country = Maize_Production.Country
+ AND CO2_Data.[year] = Maize_Production.[Year]
+
+ INNER JOIN Maize_Yields
+ ON CO2_Data.country = Maize_Yields.Country
+ AND  CO2_Data.[year] = Maize_Yields.[Year]
+
+INNER JOIN Rice_Production
+ ON CO2_Data.country = Rice_Production.Country
+ AND CO2_Data.[year] = Rice_Production.[Year]
+
+ INNER JOIN Rice_Yields
+ ON CO2_Data.country = Rice_Yields.Country
+ AND CO2_Data.[year] = Rice_Yields.[Year]
+
+ INNER JOIN Surface_Temperature_Anomaly
+ ON CO2_Data.country = Surface_Temperature_Anomaly.Country
+ AND CO2_Data.[year] = Surface_Temperature_Anomaly.[Year]
+
+ INNER JOIN Wheat_Production
+ ON CO2_Data.country = Wheat_Production.Country
+ AND CO2_Data.[year] = Wheat_Production.[Year]
+
+INNER JOIN Wheat_Yields
+ON CO2_Data.country = Wheat_Yields.Country
+AND CO2_Data.[year] = Wheat_Yields.[Year]
+ORDER BY country, year;
+
+DROP VIEW VW_Table
+
+CREATE VIEW VW_Table
+As
+(SELECT [iso_code], CO2_Data.[country], CO2_Data.[year],[co2],[population], 
+(Maize_Production.[Production_Tones])[Maize_production_in_Tones], (Maize_Yields.[Yield_Hectogram_Per_Hectare])[Maize_Yield_in_HG],   
+(Rice_Production.[Production_Tones])[Rice_Production_in_Tones], (Rice_Yields.[Yield_Hectogram_Per_Hectare])[Rice_Yield_in_HA],
+Surface_Temperature_Anomaly.Surface_Temp_Anomaly, (Wheat_Production.Production_Tones)[Wheat_Production_in_Tones], (Wheat_Yields.Yield_Hectogram_Per_Hectare)[Wheat_Yield_in_HG]  FROM CO2_Data
+ INNER JOIN Maize_Production
+ ON CO2_Data.country = Maize_Production.Country
+ AND CO2_Data.[year] = Maize_Production.[Year]
+
+ INNER JOIN Maize_Yields
+ ON CO2_Data.country = Maize_Yields.Country
+ AND  CO2_Data.[year] = Maize_Yields.[Year]
+
+INNER JOIN Rice_Production
+ ON CO2_Data.country = Rice_Production.Country
+ AND CO2_Data.[year] = Rice_Production.[Year]
+
+ INNER JOIN Rice_Yields
+ ON CO2_Data.country = Rice_Yields.Country
+ AND CO2_Data.[year] = Rice_Yields.[Year]
+
+ INNER JOIN Surface_Temperature_Anomaly
+ ON CO2_Data.country = Surface_Temperature_Anomaly.Country
+ AND CO2_Data.[year] = Surface_Temperature_Anomaly.[Year]
+
+ INNER JOIN Wheat_Production
+ ON CO2_Data.country = Wheat_Production.Country
+ AND CO2_Data.[year] = Wheat_Production.[Year]
+
+INNER JOIN Wheat_Yields
+ON CO2_Data.country = Wheat_Yields.Country
+AND CO2_Data.[year] = Wheat_Yields.[Year]
+
+)
+
+SELECT * FROM VW_Table
+
+-- BY DEFAULT IT IS ORDERED IN ASCENDING ORDER SO THE 1ST TOP ROW WILL BE THE MINIMUM YEAR 
+ SELECT TOP 1 [year] FROM [dbo].[VW_Table]
+ ORDER BY [year] 
+
+ -- ORDER BY ASCENDING AND THEN PICK THE 1ST WOULD BE THE MAX YEAR
+ SELECT TOP 1 [year] FROM [dbo].[VW_Table]
+ ORDER BY [year] DESC
+
+
+SELECT * FROM [dbo].[VW_Table]
+
+-- NOW DELETE ALL DATA SET FROM TABLE THAT ONLY HAVE CROP PRODUCTION BETWEEN 2000 AND 2018 
+-- OR DELETE ALL DATA SETS THAT DOESN'T HAVE CROP PRODUCTION STATUS BEFORE 2000 IF IT EXISTS    
+-- CROPS IN THIS CONTEXT ARE MAIZE, RICE AND WHEAT
+/* SO TO FIND THOSE COUNTRIES IF THE COUNTRIES REALLY DOESN'T HAVE NOT ANY INFORMATION IN 
+BEFORE 2000 THEN THEY WILL HAVE NULL VALUES IN THEIR PRODUCTION OR YIELD COLUMN.
+*/
+
+SELECT [Country] FROM Maize_Production
+WHERE [Production_Tones] IS NULL
+
+SELECT [Country]  FROM Maize_Yields
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+SELECT [Country] FROM [dbo].[Rice_Production]
+WHERE [Production_Tones] IS NULL
+
+SELECT [Country] FROM [dbo].[Rice_Yields] 
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+SELECT [Country] FROM [dbo].[Wheat_Production]
+WHERE [Production_Tones] IS NULL
+
+SELECT [Country] FROM [dbo].[Wheat_Yields]
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+
+DELETE FROM Maize_Production
+WHERE [Production_Tones] IS NULL
+
+DELETE  FROM Maize_Yields
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+DELETE FROM [dbo].[Rice_Production]
+WHERE [Production_Tones] IS NULL
+
+DELETE FROM [dbo].[Rice_Yields] 
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+DELETE FROM [dbo].[Wheat_Production]
+WHERE [Production_Tones] IS NULL
+
+DELETE FROM [dbo].[Wheat_Yields]
+WHERE [Yield_Hectogram_Per_Hectare] IS NULL
+
+
+SELECT * FROM VW_Table -- IS READY TO POWER BI DATA VISUALIZATION
+
+ CREATE VIEW VW_World_Crop_Production 
+ AS
+ (
+SELECT [year], SUM ([Maize_production_in_Tones])[Annual_maize_production]
+,SUM ([Rice_Production_in_Tones])[Annual_Rice_Production],
+SUM ([Wheat_Production_in_Tones])[Annual_Wheat_Production] FROM [dbo].[VW_Table]
+GROUP BY [year]
+)
+
+
+CREATE VIEW VW_World_Yield
+AS
+(
+SELECT [year] ,SUM ([Maize_Yield_in_HG])[Annual_maize_Yield]
+,SUM ([Rice_Yield_in_HA])[Annual_Rice_Yield],
+SUM ([Wheat_Yield_in_HG])[Annual_Wheat_Yield] FROM [dbo].[VW_Table]
+GROUP BY [year]
+)
+
